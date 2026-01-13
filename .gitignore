@@ -1,0 +1,18 @@
+# VS Code
+.vscode/
+*.code-workspace
+
+# Build files
+build/
+dist/
+bin/
+obj/
+
+# Compiled files
+*.exe
+*.o
+*.class
+
+# Dependencies
+node_modules/
+.DS_Store

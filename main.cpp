@@ -16,8 +16,8 @@ struct Employee
     string Email;
     string Address;
     int SoNgayCong;
-    double LuongNgay;
-    double ThucLinh = SoNgayCong * LuongNgay;
+    long LuongNgay;
+    long ThucLinh = SoNgayCong * LuongNgay;
 };
 
 struct Node
@@ -105,6 +105,24 @@ void add_pos(LIST& l, Employee emp, int pos)
     }
 }
 
+string format_currency(long amount)
+{
+    string result = "";
+    string num = to_string(amount);
+    int count = 0;
+    for (int i = num.length() - 1; i >= 0; i--)
+    {
+        if (count == 3)
+        {
+            result = "." + result;
+            count = 0;
+        }
+        result = num[i] + result;
+        count++;
+    }
+    return result + " VND";
+}
+
 bool check_employee_id(LIST l, string id)
 {
     Node* Q = l;
@@ -163,8 +181,8 @@ void output_employee(Employee emp)
     cout << "Email: " << emp.Email << endl;
     cout << "Dia chi: " << emp.Address << endl;
     cout << "So ngay cong: " << emp.SoNgayCong << endl;
-    cout << "Luong ngay: " << emp.LuongNgay << endl;
-    cout << "Thuc linh: " << emp.ThucLinh << endl;
+    cout << "Luong ngay: " << format_currency(emp.LuongNgay) << endl;
+    cout << "Thuc linh: " << format_currency(emp.ThucLinh) << endl;
     cout << "-----------------------------\n";
 };
 
@@ -181,6 +199,7 @@ void output_list(LIST l)
 void write_file(string filename, fstream& f, LIST l)
 {
     f.open(filename, ios::out);
+    f << fixed << setprecision(0);
     Node* Q = l;
     while (Q != NULL)
     {
@@ -213,6 +232,7 @@ void read_file(string filename, fstream& f, LIST& l)
         f >> emp.LuongNgay;
         f >> emp.ThucLinh;
         f.ignore();
+        emp.ThucLinh = emp.SoNgayCong * emp.LuongNgay;
         add_tail(l, emp);
     }
     f.close();
@@ -456,6 +476,7 @@ int main()
         display_menu();
         cin >> choice;
         cin.ignore();
+        cout << endl;
         switch (choice)
         {
         case 1:
